@@ -16,8 +16,18 @@ using pll = pair<ll, ll>;
 using vll = vector<ll>;
 using vvll = vector<vll>;
 
-
-int main() {
-    vll a = {1, 2, 3, 4, 5};
-    cout << *max_element(a.begin() + 1, a.begin() + 3) << '\n';
+void solve() {
+    ll n, c;
+    cin >> n >> c;
+    vll a(n);
+    for (ll & x : a) cin >> x;
+    sort(rall(a));
+    ll ans = 0;
+    for (ll i = 0; i < n; i++) {
+        if (a[i] <= c) c /= 2;
+        else ans++;
+    }
+    cout << ans << '\n';
 }
+
+int main() { ll t; cin >> t; while (t--) solve(); }

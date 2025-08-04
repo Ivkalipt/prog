@@ -5,7 +5,6 @@ using namespace std;
 #define fastio cin.tie(0)->sync_with_stdio(0)
 #define rep(i, a, b) for (int i = a; i < (b); ++i)
 #define all(x) begin(x), end(x)
-#define rall(x) rbegin(x), rend(x)
 #define sz(x) (int)(x).size()
 #define F first
 #define S second
@@ -16,8 +15,17 @@ using pll = pair<ll, ll>;
 using vll = vector<ll>;
 using vvll = vector<vll>;
 
+const int MAXN = 2e5 + 1;
+
+void solve() {
+    ll n, m;
+    cin >> n >> m;
+    if (n == 1 || m == 1 || (n == 2 && m == 2)) cout << "NO\n";
+    else cout << "YES\n";
+}
 
 int main() {
-    vll a = {1, 2, 3, 4, 5};
-    cout << *max_element(a.begin() + 1, a.begin() + 3) << '\n';
+    ll t;
+    cin >> t;
+    while (t--) solve();
 }

@@ -17,14 +17,12 @@ using namespace std;
 
 ll inf = 1e9 + 7;
 
-ll powByMod(ll a, ll p, ll mod) {
-    if (p == 0) return 1;
-    ll z = powByMod(a % mod, p / 2, mod) % mod;
-    if (p % 2 == 0)
-        return (z * z) % mod;
-    else
-        return ((a % mod) * ((z * z) % mod)) % mod;
+ll powByMod(ll a, ll n, ll mod) {
+    if(n == 0) return 1;
+    if (n % 2 == 0) return powByMod((a * a) % mod, n / 2, mod);
+    return (a * powByMod(a, n - 1, mod)) % mod;
 }
+
 int main() {
     ll a, p;
     cin >> a >> p;

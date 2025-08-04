@@ -16,22 +16,28 @@ using vll = vector<ll>;
 using vvll = vector<vll>;
 
 void solve() {
-    ll n, k;
-    cin >> n >> k;
-    vll a(n + 2, 0), pref(n + 2, 0), dp(n + 2, 0);
-    a[n + 1] = 1, a[0] = 1;
-    pref[0] = 1;
-    rep(i, 1, n + 1) {
-        cin >> a[i];
-        pref[i] = a[i] + pref[i - 1];
+    ll n;
+    cin >> n;
+    vll p(n), s(n), a(n);
+    for (ll & c : p) cin >> c;
+    for (ll & c : s) cin >> c;
+    rep(i, 0, n) {
+        a[i] = lcm(p[i], s[i]);
+        cout << a[i] << ' ';
     }
-    rep(i, k + 1, n + 2) {
-        if (pref[i - 1] - pref[i - k - 1] == 0) dp[i] = dp[i - k - 1] + 1;
-        else dp[i] = dp[i - 1];
+    rep(i, 1, n) {
+        if (p[i - 1] % a[i] != 0) {
+            cout << "NO\n";
+            return;
+        }
     }
-    cout << dp[n + 1] << '\n';
-
-
+    rep(i, 0, n - 1) {
+        if (s[i + 1] % a[i] != 0) {
+            cout << "NO\n";
+            return;
+        }
+    }
+    cout << "YES\n";
 }
 
 int main() {
