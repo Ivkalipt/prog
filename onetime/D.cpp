@@ -1,83 +1,70 @@
-#include <iostream>
-#include <numeric>
-#include <vector>
-
+#pragma GCC optimize("Ofast,unroll-loops")
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> parent;
-vector<int> rank_;
-vector<int> delta; // Дополнительный счетчик для корня
-vector<int> size_; // Размер множества
+#define fastio cin.tie(0)->sync_with_stdio(0)
+#define all(x) begin(x), end(x)
+#define sz(x) (ll)(x).size()
+#define F first
+#define S second
+#define pb push_back
 
-int find(int x) {
-  if (parent[x] != x) {
-    int root = find(parent[x]);
-    delta[x] += delta[parent[x]]; // Переносим счетчик
-    parent[x] = root;
-  }
-  return parent[x];
-}
+using ll = long long;
+using ld = long double;
+using pll = pair<ll, ll>;
+using vll = vector<ll>;
+using vpll = vector<pair<ll, ll>>;
+using vvll = vector<vll>;
 
-void unite(int x, int y) {
-  x = find(x);
-  y = find(y);
-  if (x == y)
-    return;
-  if (rank_[x] < rank_[y]) {
-    swap(x, y);
-  }
-  parent[y] = x;
-  delta[y] -= delta[x]; // Корректируем счетчик
-  size_[x] += size_[y];
-  if (rank_[x] == rank_[y]) {
-    rank_[x]++;
-  }
-}
+constexpr ll MOD = 1e9 + 7;
+constexpr ll INF = 4e18;
+constexpr ll N = 2e5;
 
-int get_count(int x) {
-  find(x); // Обновляем счетчики
-  return delta[x];
+void solve() {
+    ll x, y, r;
+    cin >> x >> y >> r;
+    ll cnt = 1;
+    bool f = 0;
+    ll l_y = abs(x), l_x = abs(y);
+    ld ldx = (ld)x, ldy = (ld)y, ldr = (ld)r;
+    if (l_y < r) cnt++;
+    if (l_y <= r) f = 1;
+    if (l_x < r) cnt++;
+    if (l_x <= r) f = 1;
+    if (sqrtl(x * x + y * y) < r) cnt++;
+    if (sqrtl(x * x + y * y) <= r) f = 1;
+    cout << cnt + f << '\n';
+
+
+    /*if (x > 0 && y > 0) {
+        if (x - r < 0) cnt++;
+        if (y - r < 0) cnt++;
+        ld ldx = (ld)x, ldy = (ld)y, ldr = (ld)r;
+        if (ldx - ldr / sqrtl(2) < 0 && ldy - ldr / sqrtl(2) < 0) cnt++;
+    }
+    if (x < 0 && y > 0) {
+        if (x + r > 0) cnt++;
+        if (y - r < 0) cnt++;
+        ld ldx = (ld)x, ldy = (ld)y, ldr = (ld)r;
+        if (ldx + ldr / sqrtl(2) > 0 && ldy - ldr / sqrtl(2) < 0) cnt++;
+    }
+    if (x > 0 && y < 0) {
+        if (x - r < 0) cnt++;
+        if (y + r > 0) cnt++;
+        ld ldx = (ld)x, ldy = (ld)y, ldr = (ld)r;
+        if (ldx - ldr / sqrtl(2) < 0 && ldy + ldr / sqrtl(2) > 0) cnt++;
+    }
+    if (x < 0 && y < 0) {
+        if (x + r > 0) cnt++;
+        if (y + r > 0) cnt++;
+        ld ldx = (ld)x, ldy = (ld)y, ldr = (ld)r;
+        if (ldx + ldr / sqrtl(2) > 0 && ldy + ldr / sqrtl(2) > 0) cnt++;
+    }*/
+
 }
 
 int main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(nullptr);
-
-  int n, m;
-  cin >> n >> m;
-
-  parent.resize(n + 1);
-  iota(parent.begin(), parent.end(), 0);
-  rank_.assign(n + 1, 0);
-  delta.assign(n + 1, 0);
-  size_.assign(n + 1, 1);
-
-  while (m--) {
-    int type;
-    cin >> type;
-    if (type == 1) {
-      int x, y;
-      cin >> x >> y;
-      x = find(x);
-      y = find(y);
-      if (x != y) {
-        if (size_[x] < size_[y]) {
-          swap(x, y);
-        }
-        delta[y]++; // Увеличиваем счетчик для меньшего множества
-        unite(x, y);
-      }
-    } else if (type == 2) {
-      int x, y;
-      cin >> x >> y;
-      cout << (find(x) == find(y) ? "YES" : "NO") << '\n';
-    } else if (type == 3) {
-      int x;
-      cin >> x;
-      find(x); // Обновляем счетчики
-      cout << delta[x] << '\n';
-    }
-  }
-
-  return 0;
+    fastio; // убрать на интерактивках
+    solve();
+    return 0;
 }

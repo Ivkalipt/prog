@@ -21,6 +21,7 @@ constexpr ll INF = 4e18;
 constexpr ll N = 2e5;
 
 void solve() {
+    string s;
 
 }
 

@@ -15,17 +15,21 @@ using pll = pair<ll, ll>;
 using vll = vector<ll>;
 using vpll = vector<pair<ll, ll>>;
 using vvll = vector<vll>;
+using uint = unsigned int;
 
 constexpr ll MOD = 1e9 + 7;
 constexpr ll INF = 4e18;
 constexpr ll N = 2e5;
 
-void solve() {
-
-}
-
 int main() {
-    fastio; // убрать на интерактивках
-    solve();
+    uint ans = 0;
+    for (int i = 29; i > -1; --i) {
+        uint t = 1u << i;
+        cout << "? " << t << endl;
+        int d;
+        if (!(cin >> d)) return 0;
+        if (d != 1) ans |= t;
+    }
+    cout << "! " << ans << endl;
     return 0;
 }
