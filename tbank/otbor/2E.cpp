@@ -21,14 +21,25 @@ constexpr ll INF = 1e18;
 constexpr ll MOD = 1e9 + 7;
 
 int main() {
-    ll n;
-    cin >> n;
-    ll SS = 0, Ssq = 0;
-    for (ll i = 1; i <= n; i++) {
-        ll x;
-        cin >> x;
-        Ssq = (Ssq + 2 * x * SS + i * x % MOD * x) % MOD;
-        SS = (SS + x * i) % MOD;
-        cout << Ssq << " ";
+  ll n, k;
+  cin >> n >> k;
+  vll a(n + 1), pref(n + 1);
+  for (ll i = 1; i <= n; i++) {
+    cin >> a[i];
+    pref[i] = a[i] + pref[i - 1]; 
+  }
+  set<ll> pref_ok = {0};
+  ll cnt = 0, curi = 1;
+  for (ll i = 1; i <= n; i++) {
+    if (pref_ok.count(pref[i] - pref[curi - 1] - k)) {
+      cnt++;
+      pref_ok.clear();
+      pref_ok.insert(0);
+      curi = i;
     }
+    pref_ok.insert(pref[i] - pref[curi - 1]);
+  }
+  cout << cnt << '\n';
+
+
 }

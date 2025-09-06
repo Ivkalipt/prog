@@ -1,4 +1,3 @@
-
 #pragma GCC optimize("Ofast,unroll-loops")
 #include <bits/stdc++.h>
 using namespace std;
@@ -21,27 +20,28 @@ using vvll = vector<vll>;
 constexpr ll INF = 1e18;
 constexpr ll MOD = 1e9 + 7;
 
-int main() {
-  ll n, t, a, b;
-  cin >> n >> t >> a >> b;
-  a -= b;
-  vll ab(n + 1), p(n + 1);
-  for (ll i = 1; i <= n; i++) {
-    cin >> ab[i];
-    p[i] = ab[i] + p[i - 1];
+vector<bool> sieve(ll n) {
+  vector<bool> isPrime(n + 1, true);
+  for (ll i = 2; i <= n; i++) {
+    if (isPrime[i])
+      for (ll j = 2 * i; j <= n; j += i) {
+        isPrime[j] = false;
+      }
   }
-  ll ans = 0;
-  ll l = 0, r = 1;
-  while (r <= n) {
-    if (r * b > t) break;
-    ll rem = t;
-    rem -= r * b;
-    // cout << rem << ' ';
-    ll len_seg = min(r, rem / a);
-    ans = max((p[r] - p[r - len_seg]), ans);
-    r++;
-    // cout << r << ' ' << (p[r] - p[r - len_seg]) << ' ' << rem << ' ' << len_seg << '\n';
-  }
-  cout << ans << '\n';
+  isPrime[1] = false;
+  return isPrime;
 }
 
+int main() {
+  ll a, b;
+  cin >> a >> b;
+  vector isPrime = sieve(b);
+  ll sum = 0, cnt = 0;
+  for (ll i = a; i <= b; i++) {
+    if (isPrime[i]) {
+      cnt++;
+      sum += i;
+    }
+  }
+  cout << sum << ' ' << cnt << '\n';
+}

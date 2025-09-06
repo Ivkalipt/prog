@@ -1,4 +1,3 @@
-
 #pragma GCC optimize("Ofast,unroll-loops")
 #include <bits/stdc++.h>
 using namespace std;
@@ -16,32 +15,45 @@ using ll = long long;
 using ld = long double;
 using pll = pair<ll, ll>;
 using vll = vector<ll>;
+using vpll = vector<pll>;
 using vvll = vector<vll>;
 
 constexpr ll INF = 1e18;
 constexpr ll MOD = 1e9 + 7;
+constexpr ll MAXN = 2e5;
 
-int main() {
-  ll n, t, a, b;
-  cin >> n >> t >> a >> b;
-  a -= b;
-  vll ab(n + 1), p(n + 1);
-  for (ll i = 1; i <= n; i++) {
-    cin >> ab[i];
-    p[i] = ab[i] + p[i - 1];
+ll used[MAXN], dp[MAXN];
+ll cnt = 0;
+bool f = 0;
+
+void dfs(ll v, vvll & g) {
+  used[v] = true;
+  cnt++;
+  if (cnt > 1e6) {
+    f = 1;
+    return;
   }
-  ll ans = 0;
-  ll l = 0, r = 1;
-  while (r <= n) {
-    if (r * b > t) break;
-    ll rem = t;
-    rem -= r * b;
-    // cout << rem << ' ';
-    ll len_seg = min(r, rem / a);
-    ans = max((p[r] - p[r - len_seg]), ans);
-    r++;
-    // cout << r << ' ' << (p[r] - p[r - len_seg]) << ' ' << rem << ' ' << len_seg << '\n';
+  for (ll u : g[v]) {
+    if (!used[u]) {
+      dfs(u, g);
+    }
   }
-  cout << ans << '\n';
+  used[v] = false;
 }
 
+int main() {
+  ll n, m;
+  cin >> n >> m;
+  vvll g(n);
+  while (m--) {
+    ll u, v;
+    cin >> u >> v;
+    u--, v--;
+    g[v].pb(u);
+    g[u].pb(v);
+  }
+  dfs(0, g);
+  if (f) cout << 1'000'000 << '\n';
+  else cout << cnt << '\n';
+  return 0;
+}
