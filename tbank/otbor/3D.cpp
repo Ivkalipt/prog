@@ -19,71 +19,40 @@ using vvll = vector<vll>;
 
 constexpr ll INF = 1e18;
 constexpr ll MOD = 1e9 + 7;
-constexpr ll MAX_TIME = 1e3;
 constexpr ll MAX_CORD = 5e5;
 
 int main() {
     fastio;
     ll t, s;
     cin >> t >> s;
-    
-    if (s == t) {
-        cout << 0 << '\n';
-        return 0;
-    }
-    
-    ll max_time = 0;
-    if (s <= MAX_CORD) {
-        max_time = min(1000LL, (ll)(sqrtl(2 * (MAX_CORD - s)) + 1));
-    }
-    
-    vll kisa_pos;
-    kisa_pos.reserve(max_time + 1);
-    
-    ll pos = s;
-    for (ll tx = 0; tx <= max_time; tx++) {
-        if (pos > MAX_CORD) break;
-        kisa_pos.push_back(pos);
-        pos += tx + 1;
+    ll max_time = 1, to_cord = t;
+    while (to_cord <= MAX_CORD) {
+        to_cord += max_time;
+        max_time++;
     }
 
-    
-    unordered_set<ll> visited;
-    queue<pair<ll, ll>> q; // {x, time}
-    
-    q.push({t, 0});
-    visited.insert(t * (max_time + 1) + 0);
-    
-    ll ans = INF;
-    
-    while (!q.empty()) {
-        ll x = q.front().F;
-        ll time = q.front().S;
-        q.pop();
-        
-        if (time < kisa_pos.size() && x == kisa_pos[time]) {
-            ans = min(ans, time);
-            continue;
+    set<ll> kotty_pos;
+    vll used(MAX_CORD + 1, -1);
+    kotty_pos.insert(t);
+
+    for (ll i = 0; i <= max_time; i++) {
+        ll curr_kissy_pos = s + (1 + i) * i / 2;
+
+        if (curr_kissy_pos > MAX_CORD) break;
+
+        if (kotty_pos.count(curr_kissy_pos)) {
+            cout << i << '\n';
+            return 0;
         }
-        
-        if (time >= max_time || ans != INF) {
-            continue;
-        }
-        
-        ll moves[3] = {x - 1, x + 1, 2 * x};
-        
-        for (ll next : moves) {
-            if (next >= 0 && next <= MAX_CORD) {
-                ll state = next * (max_time + 1) + (time + 1);
-                if (visited.find(state) == visited.end()) {
-                    visited.insert(state);
-                    q.push({next, time + 1});
-                }
+
+        set<ll> new_kotty_pos;
+        for (ll x : kotty_pos) {
+            for (ll new_x : {x + 1, x - 1, 2 * x}) {
+                if (new_x < 0 || new_x > MAX_CORD) continue;
+                new_kotty_pos.insert(new_x);
             }
         }
+        kotty_pos = set(all(new_kotty_pos));
     }
-    
-    cout << (ans == INF ? -1 : ans) << '\n';
-    
-    return 0;
+    cout << -1 << '\n';
 }
