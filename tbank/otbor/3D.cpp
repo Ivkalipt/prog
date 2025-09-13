@@ -1,12 +1,13 @@
 #pragma GCC optimize("Ofast,unroll-loops")
 #include <bits/stdc++.h>
+
 using namespace std;
 
 #define fastio cin.tie(0)->sync_with_stdio(0)
-#define rep(i, a, b) for (int i = a; i < (b); ++i)
+#define rep(i, a, b) for (ll i = a; i < (b); ++i)
 #define all(x) begin(x), end(x)
 #define rall(x) rbegin(x), rend(x)
-#define sz(x) (int)(x).size()
+#define sz(x) (ll)(x).size()
 #define F first
 #define S second
 #define pb push_back
@@ -21,38 +22,52 @@ constexpr ll INF = 1e18;
 constexpr ll MOD = 1e9 + 7;
 constexpr ll MAX_CORD = 5e5;
 
-int main() {
-    fastio;
-    ll t, s;
-    cin >> t >> s;
-    ll max_time = 1, to_cord = t;
-    while (to_cord <= MAX_CORD) {
-        to_cord += max_time;
-        max_time++;
+signed main() {
+  fastio;
+  ll t, s;
+  cin >> t >> s;
+
+  ll max_time = 0;
+  while (1 == 1) {
+    ll pos = s + ((max_time * (max_time + 1)) >> 1);
+    if (pos > MAX_CORD) {
+      max_time--;
+      break;
+    }
+    max_time++;
+  }
+
+  vll kotty_pos;
+  kotty_pos.push_back(t);
+  vector used(MAX_CORD + 1, -1); 
+
+  for (ll i = 0; i <= max_time; i++) {
+    ll cur_kissy_cord = s + i * (i + 1) / 2;
+    if (cur_kissy_cord > MAX_CORD) break;
+
+    for (ll x : kotty_pos) {
+      if (x == cur_kissy_cord) {
+        cout << i << endl;
+        return 0;
+      }
     }
 
-    set<ll> kotty_pos;
-    vll used(MAX_CORD + 1, -1);
-    kotty_pos.insert(t);
+    if (t == max_time)
+      break;
 
-    for (ll i = 0; i <= max_time; i++) {
-        ll curr_kissy_pos = s + (1 + i) * i / 2;
-
-        if (curr_kissy_pos > MAX_CORD) break;
-
-        if (kotty_pos.count(curr_kissy_pos)) {
-            cout << i << '\n';
-            return 0;
+    vll new_kotty_pos;
+    for (ll x : kotty_pos) {
+      for (ll y : {x + 1, x - 1, 2 * x}) {
+        if (y < 0 || y > MAX_CORD) continue;
+        if (used[y] != i + 1) {
+          used[y] = i + 1;
+          new_kotty_pos.push_back(y);
         }
-
-        set<ll> new_kotty_pos;
-        for (ll x : kotty_pos) {
-            for (ll new_x : {x + 1, x - 1, 2 * x}) {
-                if (new_x < 0 || new_x > MAX_CORD) continue;
-                new_kotty_pos.insert(new_x);
-            }
-        }
-        kotty_pos = set(all(new_kotty_pos));
+      }
     }
-    cout << -1 << '\n';
+    kotty_pos = vector(all(new_kotty_pos));
+  }
+
+  cout << -1 << endl;
+  return 0;
 }

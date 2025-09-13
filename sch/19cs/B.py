@@ -9,16 +9,11 @@ def conv(x, b):
     return res;
 
 def main():
-    x = int(input())
-    while (True):
-        for i in range(2, 37):
-            a = conv(x, i)
-            # print(a, i)
-            if len(set(a)) == 1:
-                print(i, a)
-                exit()
-        x += 1
-    # print(conv(x, ))
+    n = int(input())
+    for i in range(2, 37):
+        a = conv(n, i)
+        if (len(set(a)) == len(a)):
+            print(i, end = ' ')
 
 if __name__ == "__main__":
     main()
