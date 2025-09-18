@@ -10,15 +10,9 @@ def conv(x, b):
 
 def main():
     x = int(input())
-    while (True):
-        for i in range(2, 37):
-            a = conv(x, i)
-            # print(a, i)
-            if len(set(a)) == 1:
-                print(i, a)
-                exit()
-        x += 1
-    # print(conv(x, ))
+    for i in range(2, 37):
+        for sym in range(i):
+            l_num_i = 1, num_10 = 
 
 if __name__ == "__main__":
     main()

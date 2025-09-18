@@ -22,7 +22,8 @@ constexpr ll INF = 1e18;
 constexpr ll MOD = 1e9 + 7;
 
 int main() {
-  unsigned char c;
-  cin >> c;
-  cout << c << '\n';
+  ll m, n;
+  cin >> m >> n;
+  if (m == n) cout << 1;
+  else cout << ((max(n, m) - min(n, m)) % 2 == 1 ? 1 : 2) << '\n';
 }
